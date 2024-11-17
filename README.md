@@ -18,7 +18,19 @@ Tiny JS Game is a small game engine written in pure C. It uses JavaScript files 
 
 ### Building the Project
 
-To build the project, run the following command:
+To build the project, run the following commands:
+
+
+Clone the project
+
+```bash
+git clone git@github.com:dmikey/tiny-js-games.git
+```
+
+```bash
+cd tiny-js-games.git
+git submodule init && git submodule update
+```
 
 Build SDL first. Needed for media. And graphics.
 
