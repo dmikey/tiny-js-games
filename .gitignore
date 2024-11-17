@@ -1,0 +1,10 @@
+
+# Ignore build and output directories
+out/
+build/
+
+# Ignore object files
+*.o
+
+# Ignore executable files
+tiny-js-game
