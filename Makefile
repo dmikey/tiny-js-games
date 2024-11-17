@@ -4,6 +4,9 @@ TARGET = out/tiny-js-game
 
 all: $(TARGET)
 
+debug: CFLAGS += -DDEBUG
+debug: $(TARGET)
+
 $(TARGET): out/main.o
 	$(CC) $(CFLAGS) -o $(TARGET) build/main.o build/duktape.o -Ilib/SDL/build/../include -Llib/SDL/build/ -Wl,-rpath,lib/SDL/build/ -lSDL3
 

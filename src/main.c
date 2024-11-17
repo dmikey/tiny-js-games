@@ -73,8 +73,17 @@ static duk_ret_t native_print(duk_context *ctx) {
 	printf("\n");
 	return 0;
 }
+static duk_ret_t my_setter(duk_context *ctx) {
+    printf("setter called\n");
+}
 
 static void setup_context(duk_context *ctx) {
+  
+    duk_push_object(ctx);
+    duk_push_c_function(ctx, my_setter, 1);
+    duk_push_string(ctx, "_title");
+    duk_put_prop_string(ctx, -2, "title");
+
     // Define console object
     duk_push_object(ctx);
     duk_push_c_function(ctx, native_print, DUK_VARARGS);
