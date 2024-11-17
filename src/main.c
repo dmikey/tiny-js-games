@@ -1,43 +1,62 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "duktape/duktape.h"
 
 static duk_ret_t native_print(duk_context *ctx) {
-	duk_push_string(ctx, " ");
-	duk_insert(ctx, 0);
-	duk_join(ctx, duk_get_top(ctx) - 1);
-	printf("%s\n", duk_safe_to_string(ctx, -1));
+	int n = duk_get_top(ctx);  // #args
+	for (int i = 0; i < n; i++) {
+		if (i > 0) {
+			printf(" ");
+		}
+		printf("%s", duk_safe_to_string(ctx, i));
+	}
+	printf("\n");
 	return 0;
 }
 
-static duk_ret_t native_adder(duk_context *ctx) {
-	int i;
-	int n = duk_get_top(ctx);  /* #args */
-	double res = 0.0;
-
-	for (i = 0; i < n; i++) {
-		res += duk_to_number(ctx, i);
+int main(int argc, char *argv[]) {
+	if (argc < 2) {
+		fprintf(stderr, "Usage: %s <script.js>\n", argv[0]);
+		return 1;
 	}
 
-	duk_push_number(ctx, res);
-	return 1;  /* one return value */
-}
+	const char *filename = argv[1];
+	FILE *file = fopen(filename, "rb");
+	if (!file) {
+		fprintf(stderr, "Could not open file: %s\n", filename);
+		return 1;
+	}
 
-int main(int argc, char *argv[]) {
+	fseek(file, 0, SEEK_END);
+	long file_size = ftell(file);
+	fseek(file, 0, SEEK_SET);
+
+	char *script = (char *)malloc(file_size + 1);
+	if (!script) {
+		fprintf(stderr, "Memory allocation failed\n");
+		fclose(file);
+		return 1;
+	}
+
+	fread(script, 1, file_size, file);
+	script[file_size] = '\0';
+	fclose(file);
+
 	duk_context *ctx = duk_create_heap_default();
 
-	(void) argc; (void) argv;  /* suppress warning */
-
+	// Define console object
+	duk_push_object(ctx);
 	duk_push_c_function(ctx, native_print, DUK_VARARGS);
-	duk_put_global_string(ctx, "print");
-	duk_push_c_function(ctx, native_adder, DUK_VARARGS);
-	duk_put_global_string(ctx, "adder");
+	duk_put_prop_string(ctx, -2, "log");
+	duk_put_global_string(ctx, "console");
 
-	duk_eval_string(ctx, "print('Hello world!');");
+	if (duk_peval_string(ctx, script) != 0) {
+		fprintf(stderr, "Error: %s\n", duk_safe_to_string(ctx, -1));
+	}
 
-	duk_eval_string(ctx, "print('2+3=' + adder(2, 3));");
 	duk_pop(ctx);  /* pop eval result */
-
 	duk_destroy_heap(ctx);
+	free(script);
 
 	return 0;
 }

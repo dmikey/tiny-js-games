@@ -7,6 +7,7 @@ Tiny JS Game is a small game engine written in pure C. It uses JavaScript files 
 - Written in pure C for performance and portability
 - Uses JavaScript for game logic and scripting
 - Simple and lightweight design
+- Web-compatible API for console logging
 
 ## Getting Started
 
