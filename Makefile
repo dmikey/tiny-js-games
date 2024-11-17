@@ -5,7 +5,7 @@ TARGET = out/tiny-js-game
 all: $(TARGET)
 
 $(TARGET): out/main.o
-	$(CC) $(CFLAGS) -o $(TARGET) build/main.o build/duktape.o
+	$(CC) $(CFLAGS) -o $(TARGET) build/main.o build/duktape.o -Ilib/SDL/build/../include -Llib/SDL/build/ -Wl,-rpath,lib/SDL/build/ -lSDL3
 
 out/main.o: src/main.c | out
 	$(CC) $(CFLAGS) -c -Isrc src/duktape/duktape.c src/main.c -lm
@@ -17,7 +17,6 @@ out:
 	mkdir -p build
 
 clean:
-	rm -rf $(TARGET) out/main.o
 	rm -rf out
 	rm -rf build
 

@@ -2,6 +2,20 @@
 #include <stdlib.h>
 #include "duktape/duktape.h"
 
+static duk_ret_t native_render(duk_context *ctx) {
+    const char *shape = duk_require_string(ctx, 0);
+    if (strcmp(shape, "rectangle") == 0) {
+        int x = duk_require_int(ctx, 1);
+        int y = duk_require_int(ctx, 2);
+        int width = duk_require_int(ctx, 3);
+        int height = duk_require_int(ctx, 4);
+        printf("Rendering rectangle at (%d, %d) with width %d and height %d\n", x, y, width, height);
+    } else {
+        return DUK_RET_TYPE_ERROR;
+    }
+    return 0;
+}
+
 static duk_ret_t native_print(duk_context *ctx) {
 	int n = duk_get_top(ctx);  // #args
 	for (int i = 0; i < n; i++) {
@@ -40,11 +54,15 @@ static char* read_file(const char *filename, long *file_size) {
 }
 
 static void setup_context(duk_context *ctx) {
-	// Define console object
-	duk_push_object(ctx);
-	duk_push_c_function(ctx, native_print, DUK_VARARGS);
-	duk_put_prop_string(ctx, -2, "log");
-	duk_put_global_string(ctx, "console");
+    // Define console object
+    duk_push_object(ctx);
+    duk_push_c_function(ctx, native_print, DUK_VARARGS);
+    duk_put_prop_string(ctx, -2, "log");
+    duk_put_global_string(ctx, "console");
+
+    // Define render function
+    duk_push_c_function(ctx, native_render, 5);
+    duk_put_global_string(ctx, "render");
 }
 
 int main(int argc, char *argv[]) {
