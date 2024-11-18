@@ -2,6 +2,8 @@
 
 Tiny JS Game is a small game engine written in pure C. It uses JavaScript files to create and run games. This project aims to provide a simple and lightweight framework for game development, leveraging the power and flexibility of JavaScript for game scripting.
 
+The goal of this project is to make producing handheld game consoles super easy and approachable.
+
 ## Features
 
 - Written in pure C for performance and portability
