@@ -4,6 +4,9 @@ TARGET = out/tiny-js-game
 
 all: $(TARGET)
 
+release: CFLAGS += -O2
+release: $(TARGET)
+
 debug: CFLAGS += -DDEBUG
 debug: $(TARGET)
 
@@ -23,4 +26,4 @@ clean:
 	rm -rf out
 	rm -rf build
 
-.PHONY: all clean
+.PHONY: all clean release debug
