@@ -16,6 +16,7 @@ The goal of this project is to make producing handheld game consoles super easy 
 ### Prerequisites
 
 - GCC (or any C compiler)
+- SDL3
 - Make
 
 ### Building the Project
