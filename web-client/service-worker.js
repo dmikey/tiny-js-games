@@ -1,5 +1,5 @@
 
-const CACHE_NAME = 'debug-dungeon-tcg-cache-v1';
+const CACHE_NAME = 'game-cache-v1';
 const urlsToCache = [
     '/',
     '/index.html',
