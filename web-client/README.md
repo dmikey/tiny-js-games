@@ -1,6 +1,6 @@
 # binjgb
 
-Web based player for the final production of a portable ROM for Gameboy.
+Web based player for the final production of a portable ROM for Gameboy. With some QoL Enhancements to make it mobile friendly. 
 
 
 ### credit
